@@ -28,7 +28,7 @@ const Tile = ({ title, href }: TileProps) => {
         }
       }}
     >
-      <div className="absolute rounded-full w-12 aspect-square bg-lime-300  opacity-0 group-hover:opacity-100 group-focus:opacity-100 group-active:opacity-100 transition-opacity" />
+      <div className="absolute rounded-full w-12 aspect-square bg-[var(--accent)] opacity-0 group-hover:opacity-100 group-focus:opacity-100 group-active:opacity-100 transition-opacity" />
 
       <motion.div
         initial={{ opacity: 0, rotateY: "180deg" }}

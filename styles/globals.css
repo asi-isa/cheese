@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --accent: rgba(190 242 100);
+}
+
 * {
   box-sizing: border-box;
   padding: 0;

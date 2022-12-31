@@ -6,7 +6,7 @@ import bg from "../public/bg.jpg";
 import bg_sm from "../public/bg_small.jpg";
 
 interface BGProps {
-  children: ReactNode;
+  children?: ReactNode;
 }
 
 const BG = ({ children }: BGProps) => {
