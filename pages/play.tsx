@@ -1,5 +1,3 @@
-import { AnimationControls } from "motion";
-import { useState } from "react";
 import BG from "../components/BG";
 import Avatar from "../components/chess/Avatar";
 import Clocks from "../components/chess/Clocks";
@@ -28,7 +26,7 @@ export default function Play() {
         <Nav />
 
         <div className="flex flex-col items-center">
-          <div className="flex gap-3">
+          <div className="flex gap-5">
             <Avatar {...player1} />
 
             <Clocks duration={duration} player1={player1} player2={player2} />

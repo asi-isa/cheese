@@ -1,54 +1,93 @@
-import { Dispatch, SetStateAction, useEffect } from "react";
-import { animate, AnimationControls } from "motion";
+import { useEffect, useState } from "react";
+import { motion, MotionValue, useTransform } from "framer-motion";
 
 interface ClockProps {
+  clock: MotionValue<number>;
   duration: number;
   playerId: string;
-  setAnimationControls: Dispatch<SetStateAction<AnimationControls | undefined>>;
   onFinish: () => void;
+  onClick: () => void;
 }
 
 const Clock = ({
+  clock,
   playerId,
-  onFinish,
-  setAnimationControls,
   duration,
+  onFinish,
+  onClick,
 }: ClockProps) => {
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  const pathLength = useTransform(clock, [0, 1], [1, 0]);
+
   useEffect(() => {
     const min = document.getElementById("min" + playerId);
     const sec = document.getElementById("sec" + playerId);
 
-    const animation = animate(
-      (progress) => {
-        const secondsRemaining = (1 - progress) * duration;
+    const unsubscribeOnChange = clock.on("change", (progress) => {
+      const secondsRemaining = (1 - progress) * duration;
 
-        const secondsCountdown = Math.floor(secondsRemaining % 60);
+      const secondsCountdown = Math.floor(secondsRemaining % 60);
 
-        const minutesCountdown = Math.floor(secondsRemaining / 60);
+      const minutesCountdown = Math.floor(secondsRemaining / 60);
 
-        const minutesCountdownLeadingZero = ("0" + minutesCountdown).slice(-2);
-        const secondsCountdownLeadingZero = ("0" + secondsCountdown).slice(-2);
+      const minutesCountdownLeadingZero = ("0" + minutesCountdown).slice(-2);
+      const secondsCountdownLeadingZero = ("0" + secondsCountdown).slice(-2);
 
-        sec!.innerHTML = secondsCountdownLeadingZero;
-        min!.innerHTML = minutesCountdownLeadingZero;
-      },
-      { duration, easing: "linear" }
-    );
+      sec!.innerHTML = secondsCountdownLeadingZero;
+      min!.innerHTML = minutesCountdownLeadingZero;
+    });
 
-    animation.pause();
+    const unsubscribeOnComplete = clock.on("animationComplete", onFinish);
 
-    setAnimationControls(animation);
+    const unsubscribeOnStart = clock.on("animationStart", () => {
+      setIsAnimating(true);
+    });
 
-    animation.finished.then(onFinish);
+    const unsubscribeOnCancel = clock.on("animationCancel", () => {
+      setIsAnimating(false);
+    });
+
+    return () => {
+      unsubscribeOnChange();
+      unsubscribeOnComplete();
+      unsubscribeOnStart();
+      unsubscribeOnCancel();
+    };
   }, []);
 
   return (
-    <div className="w-20 h-20 rounded-full flex items-center justify-center border-8 border-[var(--accent)]">
+    <div
+      className={`w-20 h-20 rounded-full flex items-center justify-center ${
+        isAnimating ? "opacity-100" : "opacity-60"
+      }`}
+      onClick={onClick}
+    >
       <div className="flex">
-        <p id={"min" + playerId}></p>
+        <p id={"min" + playerId}>00</p>
         <p>:</p>
-        <p id={"sec" + playerId}></p>
+        <p id={"sec" + playerId}>00</p>
       </div>
+
+      <motion.svg
+        width="90"
+        height="90"
+        viewBox="0 0 90 90"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className="absolute"
+      >
+        <motion.circle
+          style={{ pathLength, rotate: "-90deg" }}
+          cx="45"
+          cy="45"
+          r="40"
+          pathLength="1"
+          strokeLinecap="round"
+          stroke="var(--accent)"
+          strokeWidth="9"
+        />
+      </motion.svg>
     </div>
   );
 };

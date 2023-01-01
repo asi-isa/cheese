@@ -8,7 +8,7 @@ interface AvatarProps {
 
 const Avatar = ({ src, name, experience }: AvatarProps) => {
   return (
-    <div className={`flex flex-col gap-1 items-center`}>
+    <div className={`flex flex-col gap-3 items-center`}>
       <div className="w-16 aspect-square rounded-full overflow-hidden relative">
         <Image src={src} alt="avatar" fill className="object-cover" />
       </div>

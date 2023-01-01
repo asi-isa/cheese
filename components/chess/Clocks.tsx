@@ -1,8 +1,8 @@
-import { useState } from "react";
-import { AnimationControls } from "motion";
+import { animate, useMotionValue, MotionValue } from "framer-motion";
 
 import Clock from "./Clock";
 import { PlayerType } from "../../types";
+import { useState } from "react";
 
 interface ClocksProps {
   duration: number;
@@ -11,36 +11,54 @@ interface ClocksProps {
 }
 
 const Clocks = ({ duration, player1, player2 }: ClocksProps) => {
-  const [animationControlsPlayer1, setAnimationControlsPlayer1] =
-    useState<AnimationControls>();
-  const [animationControlsPlayer2, setAnimationControlsPlayer2] =
-    useState<AnimationControls>();
+  const [currentPlayer, setCurrentPlayer] = useState<PlayerType>();
 
-  function runClockPlayer1() {
-    animationControlsPlayer1?.play();
-    animationControlsPlayer2?.pause();
+  const clock1 = useMotionValue(0);
+  const clock2 = useMotionValue(0);
+
+  function play(clock: MotionValue<number>) {
+    const remainingAnimationTime = duration * (1 - clock.get());
+    animate(clock, 1, { duration: remainingAnimationTime, ease: "linear" });
   }
 
-  function runClockPlayer2() {
-    animationControlsPlayer1?.pause();
-    animationControlsPlayer2?.play();
+  function pause(clock: MotionValue<number>) {
+    clock.stop();
   }
 
   return (
-    <div className="flex gap-3">
-      <Clock
-        setAnimationControls={setAnimationControlsPlayer1}
-        duration={duration}
-        playerId={player1.id}
-        onFinish={() => console.log("player", player1.id, " time over")}
-      />
+    <div className="flex flex-col items-center gap-4">
+      <div className="flex gap-4">
+        <Clock
+          clock={clock1}
+          duration={duration}
+          playerId={player1.id}
+          onFinish={() => console.log("player", player1.id, " time over")}
+          onClick={() => {
+            play(clock1);
+            pause(clock2);
+            setCurrentPlayer(player1);
+          }}
+        />
 
-      <Clock
-        setAnimationControls={setAnimationControlsPlayer2}
-        duration={duration}
-        playerId={player2.id}
-        onFinish={() => console.log("player", player2.id, " time over")}
-      />
+        <Clock
+          clock={clock2}
+          duration={duration}
+          playerId={player2.id}
+          onFinish={() => console.log("player", player2.id, " time over")}
+          onClick={() => {
+            play(clock2);
+            pause(clock1);
+            setCurrentPlayer(player2);
+          }}
+        />
+      </div>
+      <p
+        className={`border border-white/40  px-2 rounded-md text-sm font-light ${
+          !currentPlayer && "invisible"
+        }`}
+      >
+        {currentPlayer?.name} move
+      </p>
     </div>
   );
 };

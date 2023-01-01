@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  --accent: rgba(190 242 100);
+  --accent: #bef264;
 }
 
 * {
