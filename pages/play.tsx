@@ -1,5 +1,6 @@
 import BG from "../components/BG";
 import Avatar from "../components/chess/Avatar";
+import Board from "../components/chess/Board";
 import Clocks from "../components/chess/Clocks";
 import Nav from "../components/Nav";
 import { PlayerType } from "../types";
@@ -25,7 +26,7 @@ export default function Play() {
       <div className="flex flex-col  gap-10">
         <Nav />
 
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center gap-5">
           <div className="flex gap-5">
             <Avatar {...player1} />
 
@@ -33,6 +34,8 @@ export default function Play() {
 
             <Avatar {...player2} />
           </div>
+
+          <Board />
         </div>
       </div>
     </BG>
