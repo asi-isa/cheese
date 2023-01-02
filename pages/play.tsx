@@ -1,8 +1,10 @@
+import { useState } from "react";
 import BG from "../components/BG";
 import Avatar from "../components/chess/Avatar";
 import Board from "../components/chess/Board";
 import Clocks from "../components/chess/Clocks";
 import Nav from "../components/Nav";
+import { initialBoard } from "../data";
 import { PlayerType } from "../types";
 
 const player1: PlayerType = {
@@ -21,13 +23,16 @@ const player2: PlayerType = {
 const duration = 120;
 
 export default function Play() {
+  const [board, setBoard] = useState(initialBoard);
+  console.log("board", board);
+
   return (
     <BG>
       <div className="flex flex-col  gap-10">
         <Nav />
 
-        <div className="flex flex-col items-center gap-5">
-          <div className="flex gap-5">
+        <div className="flex flex-col items-center gap-10">
+          <div className="flex gap-8">
             <Avatar {...player1} />
 
             <Clocks duration={duration} player1={player1} player2={player2} />
@@ -35,7 +40,7 @@ export default function Play() {
             <Avatar {...player2} />
           </div>
 
-          <Board />
+          <Board board={board} setBoard={setBoard} />
         </div>
       </div>
     </BG>

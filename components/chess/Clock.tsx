@@ -64,7 +64,7 @@ const Clock = ({
       onClick={onClick}
     >
       <div className="flex">
-        <p id={"min" + playerId}>00</p>
+        <p id={"min" + playerId}>{("0" + duration / 60).slice(-2)}</p>
         <p>:</p>
         <p id={"sec" + playerId}>00</p>
       </div>
@@ -84,8 +84,8 @@ const Clock = ({
           r="40"
           pathLength="1"
           strokeLinecap="round"
-          stroke="var(--accent)"
-          strokeWidth="9"
+          stroke="white"
+          strokeWidth="2"
         />
       </motion.svg>
     </div>
