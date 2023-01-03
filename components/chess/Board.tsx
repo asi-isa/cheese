@@ -52,7 +52,7 @@ const Board = ({ board, setBoard }: BoardProps) => {
             <div key={i} className="flex">
               {startOfRow && <RankLabel title={RANK_LABELES[rowNum]} />}
 
-              <Square i={i} setBoard={setBoard} {...square} />
+              <Square i={i} board={board} setBoard={setBoard} {...square} />
 
               {endOfRow && <RankLabel title={RANK_LABELES[rowNum]} />}
             </div>

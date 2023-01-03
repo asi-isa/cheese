@@ -70,7 +70,10 @@ export const initialBoard: SquareType[] = [
     possiblePiece: null,
     piece: { name: "pawn", color: "black", moved: false, isSelected: false },
   },
-  { possiblePiece: null, piece: null },
+  {
+    possiblePiece: null,
+    piece: { name: "pawn", color: "black", moved: false, isSelected: false },
+  },
   { possiblePiece: null, piece: null },
   { possiblePiece: null, piece: null },
   { possiblePiece: null, piece: null },

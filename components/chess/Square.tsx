@@ -4,6 +4,7 @@ import Piece, { PieceType } from "./Piece";
 import PossiblePiece from "./PossiblePiece";
 
 interface SquareProps extends SquareType {
+  board: SquareType[];
   setBoard: Dispatch<SetStateAction<SquareType[]>>;
   i: number;
 }
@@ -17,7 +18,7 @@ function determineBorderRadius(i: number) {
   if (i === 63) return "rounded-br-lg";
 }
 
-const Square = ({ i, piece, possiblePiece, setBoard }: SquareProps) => {
+const Square = ({ i, piece, possiblePiece, setBoard, board }: SquareProps) => {
   const rowNum = Math.floor(i / 8);
   const rowNumIsEven = rowNum % 2 === 0;
   const squareNumIsEven = i % 2 === 0;
@@ -35,7 +36,9 @@ const Square = ({ i, piece, possiblePiece, setBoard }: SquareProps) => {
       }}
       className={`flex justify-center items-center backdrop-blur-lg mix-blend-lighten ${borderRadius}`}
     >
-      {piece && <Piece {...piece} index={i} setBoard={setBoard} />}
+      {piece && (
+        <Piece {...piece} index={i} board={board} setBoard={setBoard} />
+      )}
 
       {possiblePiece && (
         <PossiblePiece
